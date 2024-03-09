@@ -63,7 +63,7 @@ const Login = () => {
             mb: "2rem",
           }}
         >
-          LOGIN
+          LOGI
         </Typography>
 
         <Box component="form" className="form" onSubmit={onSubmit}>
