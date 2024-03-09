@@ -1,7 +1,7 @@
 import { createBrowserRouter } from "react-router-dom";
 import Home from '../pages/Home.tsx'
 import Login from '../pages/Login.tsx'
-import Register from '../pages/Register.tsx'
+import Register from '../pages/Register/Register.tsx'
 import NotFound from "../pages/NotFound.tsx";
 import WeatherApp from "../pages/WeatherApp.tsx";
 import TanStackQuery from "../pages/TanStackQuery.tsx";

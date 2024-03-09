@@ -1,28 +1,57 @@
 import { useForm } from "react-hook-form";
-import NavBar from "../components/NavBar";
-import Container from "@mui/material/Container";
-import Typography from "@mui/material/Typography";
-import { TextField, Button, MenuItem, Box } from "@mui/material";
-import Checkbox from "@mui/material/Checkbox";
-import "../styles/register.css";
+import {
+  TextField,
+  Button,
+  MenuItem,
+  Box,
+  Container,
+  Typography,
+  Checkbox,
+} from "@mui/material";
+import "./register.css";
+import * as yup from "yup";
 import { useState } from "react";
+import { yupResolver } from "@hookform/resolvers/yup";
+import NavBar from "../../components/NavBar";
+import { sxBtn } from "./Register.style";
 
 const countries: string[] = ["Mexico", "USA", "Argentina"];
 
 type FormInputs = {
-    name: string,
-    email: string,
-    password: number,
-    confirmPassword: number,
-    dateOfBirth: Date,
-    country: string,
-    file: File[],
-    contract: boolean,
-}
+  name: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
+  dateOfBirth: Date;
+  country: string;
+  file: FileList;
+  contract: boolean;
+};
 
 const Register = () => {
-
   const [checkbox, setCheckbox] = useState<boolean>(false);
+
+  const schema = yup.object().shape({
+    name: yup.string().min(10, "Minimo 10 caracteres").required("El nombre es requerido"),
+    email: yup.string().email("Coloque un email valido").required("El email es requerido"),
+    password: yup.string().min(4, "Minimo 4 caracteres").max(10, "No se permiten mas de 10 caracteres").required(),
+    confirmPassword: yup.string().oneOf([yup.ref("password")], "La contraseña no coincide").required(),
+    dateOfBirth: yup.date().required().typeError("Ingrese una fecha valida"),
+    country: yup.string().required(),
+    file: yup.mixed<FileList>().test(
+      "fileExist", "Debes subir un archivo", (value) => {
+        return value && value?.length > 0
+      }
+    ).test(
+      "fileExtension", "Debe ser una extension valida", (value) => {
+        const valueConv = (value as FileList);
+        if (valueConv && valueConv.length > 0) {
+          return valueConv[0].type === "image/jpeg"
+        }
+      }
+    ),
+    contract: yup.boolean().oneOf([true], 'Debes aceptar los términos y condiciones').required(),
+  })
 
   const {
     register,
@@ -33,8 +62,9 @@ const Register = () => {
     reset,
   } = useForm<FormInputs>({
     defaultValues: {
-        email: 'test@test.com'
-    }
+
+    },
+    resolver: yupResolver(schema),
   });
 
   console.log(errors);
@@ -42,6 +72,7 @@ const Register = () => {
   const onSubmit = handleSubmit((data) => {
     console.log(data.file[0].name);
     console.log(data);
+    setCheckbox(!checkbox);
     reset();
   });
 
@@ -50,12 +81,7 @@ const Register = () => {
       <NavBar />
       <Container
         maxWidth="md"
-        sx={{
-          border: 1,
-          mt: "10px",
-          mb: "30px",
-          padding: "2rem",
-        }}
+        sx={sxBtn}
       >
         <Typography
           variant="h3"
@@ -82,16 +108,7 @@ const Register = () => {
               width: "80%",
               mb: "2rem",
             }}
-            {...register("name", {
-              required: {
-                value: true,
-                message: "Introduzca un nombre",
-              },
-              minLength: {
-                value: 8,
-                message: "El nombre debe tener mínimo 8 carácteres",
-              },
-            })}
+            {...register("name")}
           />
           {errors.email && (
             <Typography variant="caption" display="block" color="#d32f2f">
@@ -107,16 +124,7 @@ const Register = () => {
               width: "80%",
               mb: "2rem",
             }}
-            {...register("email", {
-              required: {
-                value: true,
-                message: "Introduzca un correo",
-              },
-              pattern: {
-                value: /^[a-z0-9._%+-]+@[a-z0-9._%-]+\.[a-z]{2,4}$/,
-                message: "Correo no válido",
-              },
-            })}
+            {...register("email")}
           />
           {errors.password && (
             <Typography variant="caption" display="block" color="#d32f2f">
@@ -132,12 +140,7 @@ const Register = () => {
               width: "80%",
               mb: "2rem",
             }}
-            {...register("password", {
-              required: {
-                value: true,
-                message: "Introduzca una contraseña",
-              },
-            })}
+            {...register("password")}
           />
           {errors.confirmPassword && (
             <Typography variant="caption" display="block" color="#d32f2f">
@@ -153,20 +156,7 @@ const Register = () => {
               width: "80%",
               mb: "2rem",
             }}
-            {...register("confirmPassword", {
-              required: {
-                value: true,
-                message: "Es necesario el campo de confirmar contraseña",
-              },
-              validate: (value) => {
-                if(value === watch("password")) {
-                    return true;
-                } else {
-                    return 'Las contraseñas no coinciden';
-                }
-
-              }
-            })}
+            {...register("confirmPassword")}
           />
           {errors.dateOfBirth && (
             <Typography variant="caption" display="block" color="#d32f2f">
@@ -185,18 +175,7 @@ const Register = () => {
               width: "80%",
               mb: "2rem",
             }}
-            {...register("dateOfBirth", {
-              required: {
-                value: true,
-                message: "Seleccione su fecha de nacimiento",
-              },
-              validate: (value) => {
-                const birthday = new Date(value);
-                const actualDate = new Date();
-                const age: number = actualDate.getFullYear() - birthday.getFullYear();
-                return age >= 18 || 'Debes ser mayor de edad';
-              },
-            })}
+            {...register("dateOfBirth")}
           />
           <TextField
             id="country"
@@ -225,18 +204,13 @@ const Register = () => {
             label="Ingrese su foto"
             type="file"
             InputLabelProps={{
-                shrink: true,
-              }}
+              shrink: true,
+            }}
             sx={{
               width: "80%",
               mb: "2rem",
             }}
-            {...register("file", {
-              required: {
-                value: true,
-                message: "Seleccione un archivo para subir",
-              },
-            })}
+            {...register("file")}
           />
           <Box
             component="div"
@@ -259,9 +233,7 @@ const Register = () => {
               sx={{
                 mr: "2rem",
               }}
-              {...register("contract", {
-                required: true,
-              })}
+              {...register("contract")}
             />
             <Typography variant="body1" color="initial">
               Términos y condiciones
@@ -281,7 +253,6 @@ const Register = () => {
           <Typography variant="body1" color="initial">
             {JSON.stringify(watch(), null, 3)};
           </Typography>
-
         </Box>
       </Container>
     </>

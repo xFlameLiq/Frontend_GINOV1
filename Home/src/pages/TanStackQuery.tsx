@@ -1,39 +1,48 @@
 import { Box, Container, Typography, TextField, Button } from "@mui/material";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { addTodo, fetchTodos } from "../services/mock_services/data";
-import TodoCard from "../components/TodoCard";
 import { useForm } from "react-hook-form";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import NavBar from "../components/NavBar";
+import TodoCard from "../components/TodoCard";
+
+
+type FormInputs = {
+  title: string,
+  filter: string,
+
+}
 
 const TanStackQuery = () => {
 
-  const [search, setSearch] = useState('');
 
+  const [search, setSearch] = useState('');
+  
   const {
     register,
     watch,
     formState: { errors },
     handleSubmit,
     reset,
-  } = useForm();
+  } = useForm<FormInputs>();
+
   const queryClient = useQueryClient();
+
+
 
   const { data: todos, isLoading } = useQuery({
     queryKey: ["todos", { search }],
     queryFn: () => fetchTodos(search),
-    staleTime: Infinity,
   });
 
-  const { mutateAsync: addTodoMutation } = useMutation({
+  const { mutateAsync: addTodoMutation,  } = useMutation({
     mutationFn: addTodo,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["todos"] });
     },
   });
 
-  const onSubmit = handleSubmit(async (data) => {
-    const title = watch("title");
+  const onSubmit = handleSubmit(async ({title}: FormInputs) => {
     try {
       await addTodoMutation({ title });
     } catch (e) {

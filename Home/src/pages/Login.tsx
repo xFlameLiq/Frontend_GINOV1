@@ -1,26 +1,27 @@
-import { TextField, Box, Button, Checkbox } from "@mui/material";
-import NavBar from "../components/NavBar";
-import Container from "@mui/material/Container";
-import Typography from "@mui/material/Typography";
+import { TextField, Box, Button, Checkbox, Container, Typography } from "@mui/material";
 import { useForm } from "react-hook-form";
-import * as yup from 'yup'
+import * as yup from "yup"
 import { useState } from "react";
 import {yupResolver} from '@hookform/resolvers/yup'
+import NavBar from "../components/NavBar";
+
+
+type FormInputs = {
+  email: string;
+  password: string;
+  contract: boolean;
+};
 
 const Login = () => {
+  
   const [checkbox, setCheckbox] = useState<boolean>(false);
 
   const schema = yup.object().shape({
-    email: yup.string().email().required(),
-    password: yup.string().required(),
+    email: yup.string().email("El email no es valido").required("El email es requerido"),
+    password: yup.string().required("La contraseña es requerida"),
     contract: yup.boolean().oneOf([true], 'Debes aceptar los términos y condiciones').required(),
   })
 
-  type FormInputs = {
-    email: string;
-    password: string;
-    contract: boolean;
-  };
 
   const {
     register,
@@ -34,6 +35,7 @@ const Login = () => {
     },
     resolver: yupResolver(schema),
   });
+
 
   console.log(errors);
 
@@ -74,7 +76,7 @@ const Login = () => {
           )}
           <TextField
             id="email"
-            type="email"
+            type="text"
             label="Ingrese un correo"
             autoComplete="current-email"
             sx={{
