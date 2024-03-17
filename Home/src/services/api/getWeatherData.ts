@@ -12,6 +12,7 @@ export const getData = async (valueCity: string) => {
       const url = `https://api.weatherapi.com/v1/current.json?key=${
         import.meta.env.VITE_API_KEY
       }&q=${valueCity}`;
+      
       const response = await axios({
         url: url,
         method: "GET",

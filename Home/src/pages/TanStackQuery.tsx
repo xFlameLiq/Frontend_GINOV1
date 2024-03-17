@@ -3,8 +3,8 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { addTodo, fetchTodos } from "../services/mock_services/data";
 import { useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
-import NavBar from "../components/NavBar";
-import TodoCard from "../components/TodoCard";
+import NavBar from "@components/NavBar";
+import TodoCard from "@components/TodoCard";
 
 
 type FormInputs = {

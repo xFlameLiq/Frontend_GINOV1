@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import * as yup from "yup"
 import { useState } from "react";
 import {yupResolver} from '@hookform/resolvers/yup'
-import NavBar from "../components/NavBar";
+import NavBar from "@components/NavBar";
 
 
 type FormInputs = {

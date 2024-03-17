@@ -12,7 +12,7 @@ import "./register.css";
 import * as yup from "yup";
 import { useState } from "react";
 import { yupResolver } from "@hookform/resolvers/yup";
-import NavBar from "../../components/NavBar";
+import NavBar from "@components/NavBar";
 import { sxBtn } from "./Register.style";
 
 const countries: string[] = ["Mexico", "USA", "Argentina"];
@@ -36,11 +36,19 @@ const Register = () => {
     email: yup.string().email("Coloque un email valido").required("El email es requerido"),
     password: yup.string().min(4, "Minimo 4 caracteres").max(10, "No se permiten mas de 10 caracteres").required(),
     confirmPassword: yup.string().oneOf([yup.ref("password")], "La contraseña no coincide").required(),
-    dateOfBirth: yup.date().required().typeError("Ingrese una fecha valida"),
+    dateOfBirth: yup.date().test(
+      "adult", "Debes ser mayor de edad", (value) => {
+        value = (value as Date);
+        const actualDate = new Date();
+        const birthDate = new Date(value);
+        const age = actualDate.getFullYear() - birthDate.getFullYear();
+        return age >= 18
+      }
+    ).required().typeError("Ingrese una fecha valida"),
     country: yup.string().required(),
     file: yup.mixed<FileList>().test(
       "fileExist", "Debes subir un archivo", (value) => {
-        return value && value?.length > 0
+        return value && value.length > 0
       }
     ).test(
       "fileExtension", "Debe ser una extension valida", (value) => {
@@ -49,7 +57,7 @@ const Register = () => {
           return valueConv[0].type === "image/jpeg"
         }
       }
-    ),
+    ).required(),
     contract: yup.boolean().oneOf([true], 'Debes aceptar los términos y condiciones').required(),
   })
 

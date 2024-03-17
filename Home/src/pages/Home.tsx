@@ -1,5 +1,5 @@
 import '../styles/home.css'
-import CompAppBarHome from '../components/AppBarHome'
+import CompAppBarHome from '@components/AppBarHome'
 
 
 const Home = () => {

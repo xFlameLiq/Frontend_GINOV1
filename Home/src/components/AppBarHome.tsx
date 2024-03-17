@@ -28,6 +28,9 @@ const CompAppBarHome = () => {
         <CompButton name={'Weather App'} route={'/weather-app'}/>
         <CompButton name={'Pokedex App'} route={'/pokedex-app'}/>
         <CompButton name={'TansTack App'} route={'/tanstack-query'}/>
+        <CompButton name={'Fake-Data'} route={'/fake-data'}/>
+        <CompButton name={'FrontendGuide'} route={'/frontend'}/>
+        <CompButton name={'ErrorPage'} route={'/404'}/>
         </Toolbar>
         </AppBar>
         <Box

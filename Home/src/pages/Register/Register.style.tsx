@@ -10,6 +10,6 @@ export const sxBtn: SxProps<Theme> = {
         sm: 'yellow',
         md: 'blue',
         lg: 'red',
-        xl: 'grey',
+        xl: 'cyan',
     }
   }

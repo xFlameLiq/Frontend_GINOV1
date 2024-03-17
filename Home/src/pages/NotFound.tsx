@@ -1,7 +1,7 @@
 import { Box, Container, Typography } from "@mui/material";
 import { useRouteError } from "react-router-dom";
 import ReportGmailerrorredIcon from "@mui/icons-material/ReportGmailerrorred";
-import CompButton from "../components/Button";
+import CompButton from "@components/Button";
 
 const NotFound = () => {
   const error = useRouteError();
