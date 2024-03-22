@@ -109,7 +109,6 @@ const GetAllPost = ({ GetAllPostsServices }: Props) => {
                     <Typography variant="body2">
                       Content: {post.body}
                       <br />
-                      {'"a benevolent smile"'}
                     </Typography>
                   </CardContent>
                 </Card>

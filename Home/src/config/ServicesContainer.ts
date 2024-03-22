@@ -2,6 +2,8 @@ import { MockCreateNewPost } from "@services/mock_services/MockCreateNewPost.ser
 import { MockGetAllPosts } from "@services/mock_services/MockGetAllPosts.service";
 import { MockUpdatePostById } from "@services/mock_services/MockUpdatePostById.service";
 
+//
+
 const ENVIRONMENT: string = "DEV"
 
 let GetAllPostImpl = MockGetAllPosts;

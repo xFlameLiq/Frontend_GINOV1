@@ -1,7 +1,7 @@
 import { SxProps, Theme } from "@mui/material";
 
 export const CreateNewPostContainer: SxProps<Theme> = {
-    backgroundColor: '#5ed134',
+
     width: '90%',
     margin: '0px auto',
     border: 1,
