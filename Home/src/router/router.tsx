@@ -20,7 +20,7 @@ import Init from "@pages/Login/Init";
 import { LoginContextProvider } from "@contexts/UserDataContext";
 import Index from "@pages/Index";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-
+import CssBaseline from "@mui/material/CssBaseline";
 const queryClient = new QueryClient();
 
 export const router = createBrowserRouter([
@@ -29,6 +29,7 @@ export const router = createBrowserRouter([
     element: (
       <QueryClientProvider client={queryClient}>
         <LoginContextProvider>
+          <CssBaseline />
           <Index />
         </LoginContextProvider>
       </QueryClientProvider>
