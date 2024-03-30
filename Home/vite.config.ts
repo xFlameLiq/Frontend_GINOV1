@@ -16,6 +16,7 @@ export default defineConfig({
       '@config': fileURLToPath(new URL('./src/config', import.meta.url)),
       '@types': fileURLToPath(new URL('./src/config', import.meta.url)),
       '@hooks': fileURLToPath(new URL('./src/hooks', import.meta.url)),
+      '@router': fileURLToPath(new URL('./src/router', import.meta.url)),
     }
   }
 

@@ -17,6 +17,7 @@
       "@customTypes/*": ["src/types/*"],
       "@config/*": ["src/config/*"],
       "@types/*": ["src/types/*"],
+      "@router/*": ["src/router/*"],
     },
 
     /* Bundler mode */
