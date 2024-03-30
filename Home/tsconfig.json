@@ -16,6 +16,7 @@
       "@contexts/*": ["src/contexts/*"],
       "@customTypes/*": ["src/types/*"],
       "@config/*": ["src/config/*"],
+      "@types/*": ["src/types/*"],
     },
 
     /* Bundler mode */

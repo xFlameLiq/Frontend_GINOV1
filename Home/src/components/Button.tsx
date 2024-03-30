@@ -1,7 +1,8 @@
 import { ThemeProvider } from "@emotion/react";
 import Button from "@mui/material/Button";
-import Box from "@mui/material/Box";
+
 import { theme } from "../utils/themes";
+
 
 type Props = {
   name: string;
@@ -23,6 +24,7 @@ const CompButton = ({ name, route }: Props) => {
           >
             {name}
           </Button>
+         
       </ThemeProvider>
     </>
   );

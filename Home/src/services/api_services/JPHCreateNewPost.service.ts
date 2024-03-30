@@ -4,6 +4,8 @@ import axios, { AxiosError } from "axios";
 export const JPHCreateNewPost: CreateNewPostType = async ({
   request: { id, userId, title, body },
 }) => {
+  if(!title) throw new Error("No hay un titulo")
+
   try {
     const response = await axios("https://jsonplaceholder.typicode.com/posts", {
       method: "POST",

@@ -1,5 +1,5 @@
 import { Box, Container, Typography, Checkbox } from "@mui/material";
-import { Todo } from "../services/mock_services/data";
+import { Todo } from "../services/mock_services/data/MockData";
 import { useState } from "react";
 
 type TodoProps = {

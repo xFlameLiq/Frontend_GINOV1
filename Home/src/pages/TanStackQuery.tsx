@@ -1,10 +1,10 @@
 import { Box, Container, Typography, TextField, Button } from "@mui/material";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { addTodo, fetchTodos } from "../services/mock_services/data";
+import { addTodo, fetchTodos } from "@services/mock_services/data/MockData"
 import { useForm } from "react-hook-form";
-import { useEffect, useState } from "react";
 import NavBar from "@components/NavBar";
 import TodoCard from "@components/TodoCard";
+import { useState } from "react";
 
 
 type FormInputs = {
@@ -40,6 +40,7 @@ const TanStackQuery = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["todos"] });
     },
+
   });
 
   const onSubmit = handleSubmit(async ({title}: FormInputs) => {

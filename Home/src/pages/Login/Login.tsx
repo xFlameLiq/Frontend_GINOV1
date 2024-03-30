@@ -4,6 +4,11 @@ import * as yup from "yup"
 import { useState } from "react";
 import {yupResolver} from '@hookform/resolvers/yup'
 import NavBar from "@components/NavBar";
+import { useMutation } from "@tanstack/react-query";
+import { FindUserType } from "@services/services_types/Login.types";
+import { Link, NavLink, Outlet } from 'react-router-dom';
+import { useLoginContext } from "@hooks/UserContext";
+import { UserStateType } from "@customTypes/UserData.types";
 
 
 type FormInputs = {
@@ -12,9 +17,30 @@ type FormInputs = {
   contract: boolean;
 };
 
-const Login = () => {
+type Props = {
+  UserLoginService: FindUserType
+};
+
+const Login = ({UserLoginService}: Props) => {
   
+  const {persist_login} = useLoginContext();
+
   const [checkbox, setCheckbox] = useState<boolean>(false);
+
+
+  const {data: userData, mutateAsync, isError, error, isSuccess} = useMutation({
+    mutationFn: UserLoginService,
+    onSettled: (data) => {
+      console.log(data);
+      if(data===undefined) return;
+      const loginUserData: UserStateType = {
+        admin_user: 0,
+        access_token: true,
+        full_name: `${data?.name} ${data?.surname}`,
+      }
+      localStorage.setItem('user', JSON.stringify(loginUserData));
+    }
+  })
 
   const schema = yup.object().shape({
     email: yup.string().email("El email no es valido").required("El email es requerido"),
@@ -28,7 +54,7 @@ const Login = () => {
     handleSubmit,
     formState: { errors },
     watch,
-    setValue,
+    //setValue,
     reset,
   } = useForm<FormInputs>({
     defaultValues: {
@@ -37,11 +63,20 @@ const Login = () => {
   });
 
 
-  console.log(errors);
+  //console.log(errors);
 
-  const onSubmit = handleSubmit((data) => {
+  const onSubmit = handleSubmit(async (data) => {
     console.log(data);
+    const email = watch("email");
+    const password = watch("password");
     setCheckbox(!checkbox);
+    await mutateAsync({
+      request: {
+        email: email,
+        password: password,
+      } 
+    })
+    persist_login({username: email, password: password})
     reset();
   });
 
@@ -167,7 +202,48 @@ const Login = () => {
           <Typography variant="body1" color="initial">
             {JSON.stringify(watch(), null, 3)};
           </Typography>
+
         </Box>
+        <Box
+      component="div"
+      textAlign="center"
+      sx={{
+        padding: "20px",
+        borderRadius: "8px",
+        backgroundColor: isError ? "#FFCCCC" : isSuccess ? "#CCFFCC" : "transparent",
+      }}
+    >
+      {isError && (
+        <Typography variant="body1" color="error">
+          {error?.message}
+        </Typography>
+      )}
+      {isSuccess && (
+        <Typography variant="body1" color="initial">
+          {userData?.id}
+          <br/>
+          {userData?.email}
+          <br/>
+          {userData?.name}
+          <br/>
+          {userData?.surname}
+          <br/>
+          {userData?.address}
+          <br/>
+          {userData?.telephone}
+          <br/>
+          {userData?.age}
+          <br/>
+          {userData?.isSession === true ? (<span>Sesion iniciada</span> ) : (<span>Sesion fallida</span>)}
+        </Typography>
+      )}
+    </Box>
+
+    <NavLink to='init'>CLICK HERE</NavLink>
+      <Outlet></Outlet>
+        <br></br>
+
+      <Link to='/login'>CLICK HERE</Link>
       </Container>
     </>
   );

@@ -5,6 +5,8 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import NavBar from "../components/NavBar";
 import { getData } from "../services/api/getWeatherData";
+import { useLoginContext } from "@hooks/UserContext";
+import { useNavigate } from "react-router-dom";
 
 // console.log(import.meta.env.VITE_API_KEY);
 
@@ -19,6 +21,10 @@ type InputForm = {
 };
 
 const WeatherApp = () => {
+
+  const {persistLoginFromObject} = useLoginContext();
+  const navigate = useNavigate();
+
   const [weather, setWeather] = useState<Partial<InputForm>>({
     found: false,
     city: "",
@@ -176,6 +182,8 @@ const WeatherApp = () => {
             WeatherAPI.com
           </a>
         </Typography>
+        <Button onClick={() => persistLoginFromObject}>Prueba de datos</Button>
+        <Button onClick={() => navigate('/')}>Ir a home</Button>
       </Container>
 
       <span>{JSON.stringify(watch(), null, 3)}</span>

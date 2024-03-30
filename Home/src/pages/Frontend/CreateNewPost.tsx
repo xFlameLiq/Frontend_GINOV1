@@ -22,7 +22,7 @@ const CreateNewPost = ({ CreateNewPostType }: Props) => {
 
   const [counter, setCounter] = useState<number>(3);
 
-  const {mutateAsync, isError, error, isSuccess,status} = useMutation({
+  const {mutateAsync, isError, error, isSuccess, status} = useMutation({
     mutationFn: CreateNewPostType,
   })
 
@@ -55,8 +55,8 @@ const CreateNewPost = ({ CreateNewPostType }: Props) => {
     setValue("userId", 1);
     setValue("id", counter);
     console.log(data)
-    const userId = watch("userId");
-    const id = watch("id");
+    const userId = Number(watch("userId"));
+    const id = Number(watch("id"));
     const title = watch("title");
     const body = watch("body");
     await mutateAsync({
@@ -146,7 +146,7 @@ const CreateNewPost = ({ CreateNewPostType }: Props) => {
             </Box>
             <Button onClick={submit} variant="contained" sx={submitBtn}>PUBLICAR</Button>
             {isError && (<Typography textAlign="center" variant="h3">{error?.message}</Typography>)}
-            {isSuccess && (<Typography textAlign="center" variant="h3">{status}</Typography>)}
+            {isSuccess && status==="success" && (<Typography textAlign="center" variant="h3">Publicación creada</Typography>)}
         </Box>
 
       </Box>

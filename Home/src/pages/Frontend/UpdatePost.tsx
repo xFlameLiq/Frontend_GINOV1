@@ -30,7 +30,7 @@ const UpdatePost = ({ UpdatePostTypeById }: Props) => {
   });
 
   const schema = yup.object().shape({
-    id: yup.number().required(),
+    id: yup.number().required("El id es requerido"),
     title: yup.string(),
     body: yup.string().required(),
   });
