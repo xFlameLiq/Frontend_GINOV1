@@ -1,13 +1,16 @@
-import { Box, Container, Typography } from "@mui/material";
+import { Box, Container, ThemeProvider, Typography } from "@mui/material";
 import { useRouteError } from "react-router-dom";
 import ReportGmailerrorredIcon from "@mui/icons-material/ReportGmailerrorred";
 import CompButton from "@components/Button";
+import { useThemeContext } from "@hooks/useThemeContext";
 
 const NotFound = () => {
+  const {theme} = useThemeContext();
   const error = useRouteError();
   console.log(error);
   return (
     <>
+      <ThemeProvider theme={theme}>
       <Container
         maxWidth="sm"
         sx={{
@@ -43,6 +46,7 @@ const NotFound = () => {
           </Box>
         </Box>
       </Container>
+      </ThemeProvider>
     </>
   );
 };

@@ -1,5 +1,5 @@
 import { createBrowserRouter } from "react-router-dom";
-import Home from "@pages/Home.tsx";
+import Home from "@pages/Home/Home";
 import Login from "@pages/Login/Login";
 import Register from "@pages/Register/Register.tsx";
 import NotFound from "@pages/NotFound.tsx";
@@ -20,7 +20,8 @@ import Init from "@pages/Login/Init";
 import { LoginContextProvider } from "@contexts/UserDataContext";
 import Index from "@pages/Index";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import CssBaseline from "@mui/material/CssBaseline";
+
+import { ThemeContextProvider } from "@styles/theme/ThemeContextProvider";
 const queryClient = new QueryClient();
 
 export const router = createBrowserRouter([
@@ -29,12 +30,16 @@ export const router = createBrowserRouter([
     element: (
       <QueryClientProvider client={queryClient}>
         <LoginContextProvider>
-          <CssBaseline />
+          <ThemeContextProvider>
           <Index />
+          </ThemeContextProvider>
         </LoginContextProvider>
       </QueryClientProvider>
     ),
-    errorElement: <NotFound />,
+    errorElement: 
+    <ThemeContextProvider>
+    <NotFound />
+    </ThemeContextProvider>,
     children: [
       {
         path: "/",

@@ -50,7 +50,7 @@ export const LoginContextProvider: React.FC<UserContextProviderProps> = ({
     full_name: '',
   })
   
-  const {data, mutateAsync, isPending, isError, error } = useMutation({
+  const {data, mutateAsync, isPending, isError, error }= useMutation({
     mutationFn: UserLoginImpl,
     onSettled: (data) => setUserState(data)
   });

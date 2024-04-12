@@ -1,7 +1,5 @@
 import NavBar from "@components/NavBar";
-import { useLoginContext } from "@hooks/UserContext";
-import { useEffect } from "react";
-import { Navigate } from "react-router-dom";
+
 import ProtectedRoutes from "./ProtectedRoutes";
 import { useAuth } from "@hooks/useAuth";
 
